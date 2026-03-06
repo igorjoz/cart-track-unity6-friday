@@ -26,7 +26,11 @@ public class DrivingScript : MonoBehaviour
 
     void Update()
     {
-        
+        float acceleration = Input.GetAxis("Vertical");
+        float brake = Input.GetAxis("Jump");
+        float steering = Input.GetAxis("Horizontal");
+
+        Drive(acceleration, brake, steering);
     }
 
     public void Drive(float acceleration, float brake, float steering)
@@ -35,5 +39,32 @@ public class DrivingScript : MonoBehaviour
         brake = Mathf.Clamp(brake, 0, 1) * maxBreakTorque;
         steering = Mathf.Clamp(steering, -1, 1) * maxSteerAngle;
 
+        float thrustTorque = 0;
+
+        if (currentSpeed < maxSpeed)
+        {
+            thrustTorque = acceleration * torque;
+        }
+
+        foreach (WheelScript wheel in wheels)
+        {
+            wheel.wheelCollider.motorTorque = thrustTorque;
+
+            if (wheel.isFrontWheel)
+            {
+                wheel.wheelCollider.steerAngle = steering;
+            }
+            else
+            {
+                wheel.wheelCollider.brakeTorque = brake;
+            }
+
+            Quaternion quat;
+            Vector3 position;
+
+            wheel.wheelCollider.GetWorldPose(out position, out quat);
+            wheel.wheelModel.transform.position = position;
+            wheel.wheelModel.transform.rotation = quat;
+        }
     }
 }

@@ -310,6 +310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 300595478}
   - component: {fileID: 300595479}
+  - component: {fileID: 300595480}
   m_Layer: 0
   m_Name: CarBody
   m_TagString: Untagged
@@ -364,6 +365,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &300595480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300595477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 736cc6fec5b6b3f4d81b920f7143e653, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,13 +463,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.54351103, z: -0, w: 0.8394021}
-  m_LocalPosition: {x: 3.12, y: 1, z: -1.11}
+  m_LocalRotation: {x: -0, y: -0.9628735, z: -0, w: 0.26995304}
+  m_LocalPosition: {x: 1.123, y: 1.43, z: 4.193}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -65.846, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -148.677, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1236,13 +1249,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54aacd3dc06bc7d4187e0030e97021fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  wheels: []
+  wheels:
+  - {fileID: 809289402}
+  - {fileID: 244347060}
+  - {fileID: 2086729098}
+  - {fileID: 1448320116}
   currentSpeed: 0
   maxSpeed: 150
-  torque: 200
+  torque: 300
   maxSteerAngle: 30
   maxBreakTorque: 500
-  rb: {fileID: 0}
+  rb: {fileID: 300595479}
 --- !u!1 &1424141045 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d7082bfdc83565499ba7d68f83c1233, type: 3}
