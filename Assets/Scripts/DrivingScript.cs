@@ -33,6 +33,7 @@ public class DrivingScript : MonoBehaviour
         if (!RaceController.isRacing)
         {
             acceleration = 0;
+            brake = 1;
         }
 
         Drive(acceleration, brake, steering);
