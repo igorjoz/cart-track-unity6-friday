@@ -18,10 +18,13 @@ public class DrivingScript : MonoBehaviour
 
     [SerializeField]
     Rigidbody rb;
+
+    float lastTimeMove = 0;
+    CheckPointController checkPointController;
     
     void Start()
     {
-        
+        checkPointController = GetComponent<CheckPointController>();
     }
 
     void Update()
@@ -29,6 +32,26 @@ public class DrivingScript : MonoBehaviour
         float acceleration = Input.GetAxis("Vertical");
         float brake = Input.GetAxis("Jump");
         float steering = Input.GetAxis("Horizontal");
+
+        if (rb.linearVelocity.magnitude > 1 || !RaceController.isRacing)
+        {
+            lastTimeMove = Time.time;
+        }
+
+        if (Time.time > lastTimeMove + 5 || rb.gameObject.transform.position.y < -5)
+        {
+            rb.transform.position = checkPointController.lastPoint.transform.position + Vector3.up * 2;
+            rb.transform.rotation = checkPointController.lastPoint.transform.rotation;
+
+            rb.gameObject.layer = 6;
+
+            Invoke("ResetLayer", 5);
+        }
+
+        void ResetLayer()
+        {
+            rb.gameObject.layer = 0;
+        }
 
         if (!RaceController.isRacing)
         {
