@@ -16,8 +16,8 @@ public class DrivingScript : MonoBehaviour
     [SerializeField]
     public float maxBreakTorque = 500;
 
-    [SerializeField]
-    Rigidbody rb;
+    public Rigidbody rb;
+    public GameObject cameraTarget;
 
     public GameObject backLights;
     public AudioSource engineSound;
@@ -26,35 +26,8 @@ public class DrivingScript : MonoBehaviour
     float currentGearPerc;
     public int numGears = 5;
 
-    float lastTimeMove = 0;
-    CheckPointController checkPointController;
-    
     void Start()
     {
-        checkPointController = GetComponentInChildren<CheckPointController>();
-    }
-
-    void Update()
-    {
-        if (rb.linearVelocity.magnitude > 1 || !RaceController.isRacing)
-        {
-            lastTimeMove = Time.time;
-        }
-
-        if (Time.time > lastTimeMove + 5 || rb.gameObject.transform.position.y < -5)
-        {
-            rb.transform.position = checkPointController.lastPoint.transform.position + Vector3.up * 2;
-            rb.transform.rotation = checkPointController.lastPoint.transform.rotation;
-
-            rb.gameObject.layer = 6;
-
-            Invoke("ResetLayer", 5);
-        }
-
-        void ResetLayer()
-        {
-            rb.gameObject.layer = 0;
-        }
     }
 
     public void Drive(float acceleration, float brake, float steering)
