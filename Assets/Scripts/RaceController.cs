@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class RaceController : MonoBehaviour
 {
@@ -8,23 +10,43 @@ public class RaceController : MonoBehaviour
 
     public CheckPointController[] carControllers;
 
+    public TextMeshProUGUI startText;
+    AudioSource audioSource;
+    public AudioClip count;
+    public AudioClip start;
+    public GameObject endPanel;
+
     void CountDown()
     {
+        if (startText != null) startText.gameObject.SetActive(true);
+
         if (timer > 0)
         {
-            Debug.Log("Race is starting: " + timer);
+            if (startText != null) startText.text = timer.ToString();
+            if (audioSource != null && count != null) audioSource.PlayOneShot(count);
             timer--;
         }
         else
         {
-            Debug.Log("Start!");
+            if (startText != null) startText.text = "START!!!";
+            if (audioSource != null && start != null) audioSource.PlayOneShot(start);
             isRacing = true;
             CancelInvoke("CountDown");
+            Invoke("HideStartText", 1f);
         }
+    }
+
+    void HideStartText()
+    {
+        if (startText != null) startText.gameObject.SetActive(false);
     }
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (startText != null) startText.gameObject.SetActive(false);
+        if (endPanel != null) endPanel.SetActive(false);
+
         InvokeRepeating("CountDown", 3, 1);
 
         GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
@@ -50,9 +72,14 @@ public class RaceController : MonoBehaviour
 
             if (carsThatCompletedRace == carControllers.Length && isRacing)
             {
-                Debug.Log("Race finished!");
+                if (endPanel != null) endPanel.SetActive(true);
                 isRacing = false;
             }
         }
+    }
+
+    public void LoadScene(int index)
+    {
+        SceneManager.LoadScene(index);
     }
 }
