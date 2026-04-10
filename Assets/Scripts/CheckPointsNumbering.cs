@@ -11,7 +11,7 @@ public class CheckPointsNumbering : MonoBehaviour
 
         for (int i = 1; i < checkPoints.Length; i++)
         {
-            checkPoints[i].gameObject.name = (i).ToString();
+            checkPoints[i].gameObject.name = (i - 1).ToString();
         }
     }
 }

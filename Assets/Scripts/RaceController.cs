@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 
 public class RaceController : MonoBehaviour
 {
@@ -27,30 +26,33 @@ public class RaceController : MonoBehaviour
     void Start()
     {
         InvokeRepeating("CountDown", 3, 1);
+
+        GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
+
+        carControllers = new CheckPointController[cars.Length];
+
+        for (int i = 0; i < cars.Length; i++)
+        {
+            carControllers[i] = cars[i].GetComponent<CheckPointController>();
+        }
     }
 
-        //void Start()
-        //{
-        //    Debug.Log("-----------------------------");
-        //    InvokeRepeating("CountDown", 3, 1);
-        //    GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
-        //    carControllers = new CheckPointController[cars.Length];
-        //    for (int i = 0; i < cars.Length; i++)
-        //    {
-        //        carControllers[i] = cars[i].GetComponent<CheckPointController>();
-        //    }
-        //}
-        //void LateUpdate()
-        //{
-        //    int finishedLap = 0;
-        //    foreach (CheckPointController controller in carControllers)
-        //    {
-        //        if (controller.lap == totalLaps + 1) finishedLap++;
-        //        if (finishedLap == carControllers.Length && isRacing)
-        //        {
-        //            Debug.Log("FinishRace");
-        //            isRacing = false;
-        //        }
-        //    }
-        //}
+    private void LateUpdate()
+    {
+        int carsThatCompletedRace = 0;
+
+        foreach (CheckPointController controller in carControllers)
+        {
+            if (controller.lap == totalLaps + 1)
+            {
+                carsThatCompletedRace++;
+            }
+
+            if (carsThatCompletedRace == carControllers.Length && isRacing)
+            {
+                Debug.Log("Race finished!");
+                isRacing = false;
+            }
+        }
+    }
 }

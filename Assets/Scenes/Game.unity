@@ -318,7 +318,7 @@ GameObject:
   - component: {fileID: 203204873}
   - component: {fileID: 203204872}
   m_Layer: 0
-  m_Name: 1
+  m_Name: 0
   m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 300595482}
   m_Layer: 0
   m_Name: CarBody
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1065,7 +1065,7 @@ GameObject:
   - component: {fileID: 496276427}
   - component: {fileID: 496276426}
   m_Layer: 0
-  m_Name: 2
+  m_Name: 1
   m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1702,7 +1702,7 @@ GameObject:
   - component: {fileID: 842822760}
   - component: {fileID: 842822759}
   m_Layer: 0
-  m_Name: 5
+  m_Name: 4
   m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2614,7 +2614,7 @@ GameObject:
   - component: {fileID: 1368136501}
   - component: {fileID: 1368136500}
   m_Layer: 0
-  m_Name: 4
+  m_Name: 3
   m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2964,7 +2964,7 @@ GameObject:
   - component: {fileID: 1709775555}
   - component: {fileID: 1709775554}
   m_Layer: 0
-  m_Name: 7
+  m_Name: 6
   m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3322,7 +3322,7 @@ GameObject:
   - component: {fileID: 1873926980}
   - component: {fileID: 1873926979}
   m_Layer: 0
-  m_Name: 6
+  m_Name: 5
   m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3544,7 +3544,7 @@ GameObject:
   - component: {fileID: 2082350300}
   - component: {fileID: 2082350299}
   m_Layer: 0
-  m_Name: 3
+  m_Name: 2
   m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
