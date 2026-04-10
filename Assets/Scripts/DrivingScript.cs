@@ -19,6 +19,13 @@ public class DrivingScript : MonoBehaviour
     [SerializeField]
     Rigidbody rb;
 
+    public GameObject backLights;
+    public AudioSource engineSound;
+    float rpm;
+    int currentGear = 1;
+    float currentGearPerc;
+    public int numGears = 5;
+
     float lastTimeMove = 0;
     CheckPointController checkPointController;
     
@@ -29,10 +36,6 @@ public class DrivingScript : MonoBehaviour
 
     void Update()
     {
-        float acceleration = Input.GetAxis("Vertical");
-        float brake = Input.GetAxis("Jump");
-        float steering = Input.GetAxis("Horizontal");
-
         if (rb.linearVelocity.magnitude > 1 || !RaceController.isRacing)
         {
             lastTimeMove = Time.time;
@@ -52,14 +55,6 @@ public class DrivingScript : MonoBehaviour
         {
             rb.gameObject.layer = 0;
         }
-
-        if (!RaceController.isRacing)
-        {
-            acceleration = 0;
-            brake = 1;
-        }
-
-        Drive(acceleration, brake, steering);
     }
 
     public void Drive(float acceleration, float brake, float steering)
@@ -68,7 +63,14 @@ public class DrivingScript : MonoBehaviour
         brake = Mathf.Clamp(brake, 0, 1) * maxBreakTorque;
         steering = Mathf.Clamp(steering, -1, 1) * maxSteerAngle;
 
+        if (backLights != null)
+        {
+            if (brake != 0) backLights.SetActive(true);
+            else backLights.SetActive(false);
+        }
+
         float thrustTorque = 0;
+        currentSpeed = rb.linearVelocity.magnitude * 5;
 
         if (currentSpeed < maxSpeed)
         {
@@ -95,5 +97,27 @@ public class DrivingScript : MonoBehaviour
             wheel.wheelModel.transform.position = position;
             wheel.wheelModel.transform.rotation = quat;
         }
+    }
+
+    public void EngineSound()
+    {
+        if (engineSound == null) return;
+
+        float gearPercentage = (1 / (float)numGears);
+        float targetGearFactor = Mathf.InverseLerp(gearPercentage * currentGear, gearPercentage * (currentGear + 1), Mathf.Abs(currentSpeed / maxSpeed));
+        currentGearPerc = Mathf.Lerp(currentGearPerc, targetGearFactor, Time.deltaTime * 5f);
+        
+        var gearNumFactor = currentGear / (float)numGears;
+        rpm = Mathf.Lerp(gearNumFactor, 1, currentGearPerc);
+
+        float speedPercentage = Mathf.Abs(currentSpeed / maxSpeed);
+        float upperGearMax = (1 / (float)numGears) * (currentGear + 1);
+        float downGearMax = (1 / (float)numGears) * currentGear;
+
+        if (currentGear > 0 && speedPercentage < downGearMax) currentGear--;
+        if (speedPercentage > upperGearMax && (currentGear < (numGears - 1))) currentGear++;
+
+        float pitch = Mathf.Lerp(1, 6, rpm);
+        engineSound.pitch = Mathf.Min(6, pitch) * 0.15f;
     }
 }
