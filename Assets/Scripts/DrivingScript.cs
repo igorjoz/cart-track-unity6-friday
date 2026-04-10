@@ -31,7 +31,7 @@ public class DrivingScript : MonoBehaviour
     
     void Start()
     {
-        checkPointController = GetComponent<CheckPointController>();
+        checkPointController = GetComponentInChildren<CheckPointController>();
     }
 
     void Update()
