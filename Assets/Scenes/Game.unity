@@ -5019,6 +5019,7 @@ GameObject:
   - component: {fileID: 2115186761}
   - component: {fileID: 2115186764}
   - component: {fileID: 2115186763}
+  - component: {fileID: 2115186765}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -5123,6 +5124,21 @@ MonoBehaviour:
     CameraRadius: 0.2
     DampingIntoCollision: 0
     DampingFromCollision: 0.5
+--- !u!114 &2115186765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115186758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1da0b6cfd980144b2183b4604eecc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  positions:
+  - {x: 0, y: 1, z: -3}
+  cam: {fileID: 2115186761}
 --- !u!1001 &6256350774618296118
 PrefabInstance:
   m_ObjectHideFlags: 0
