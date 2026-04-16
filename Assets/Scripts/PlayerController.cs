@@ -21,6 +21,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (checkPointController.lap == RaceController.totalLaps + 1)
+        {
+            return;
+        }
+
         float acceleration = Input.GetAxis("Vertical");
         float steering = Input.GetAxis("Horizontal");
         float brake = Input.GetAxis("Jump");
