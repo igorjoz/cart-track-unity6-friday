@@ -4,15 +4,17 @@ using Unity.Cinemachine;
 public class CameraController : MonoBehaviour
 {
     public Vector3[] positions;
-    public CinemachineVirtualCamera cam;
+    public CinemachineCamera cam;
     int activePosition = 0;
 
     void Start()
     {
         if (positions.Length == 0 || cam == null) return;
         
-        var transposer = cam.GetCinemachineComponent(CinemachineCore.Stage.Body);
-        // Uwaga:zależy od wersji Cinemachine (np. m_FollowOffset)
+        var follow = cam.GetComponent<CinemachineThirdPersonFollow>();
+        if (follow != null) {
+            follow.ShoulderOffset = positions[activePosition];
+        }
     }
 
     void Update()
@@ -24,14 +26,26 @@ public class CameraController : MonoBehaviour
             activePosition++;
             activePosition = activePosition % positions.Length;
             
-            var transposer = cam.GetCinemachineComponent(CinemachineCore.Stage.Body);
-            // Aktualizacja pozycji (m_FollowOffset)
+            var follow = cam.GetComponent<CinemachineThirdPersonFollow>();
+            if (follow != null) {
+                follow.ShoulderOffset = positions[activePosition];
+            }
         }
     }
 
     public void SetCameraProperties(GameObject car)
     {
-        cam.Follow = car.GetComponent<DrivingScript>().rb.transform;
-        cam.LookAt = car.GetComponent<DrivingScript>().cameraTarget.transform;
+        if (cam != null && car != null)
+        {
+            DrivingScript ds = car.GetComponent<DrivingScript>();
+            if (ds != null && ds.rb != null)
+            {
+                cam.Follow = ds.rb.transform;
+            }
+            if (ds != null && ds.cameraTarget != null)
+            {
+                cam.LookAt = ds.cameraTarget.transform;
+            }
+        }
     }
 }
