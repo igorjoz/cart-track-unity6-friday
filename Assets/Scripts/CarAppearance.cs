@@ -13,9 +13,28 @@ public class CarAppearance : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        nameText.text = playerName;
-        carRenderer.material.color = carColor;
-        nameText.color = carColor; // opcjonalne
+        if (playerNumber == 0)
+        {
+            playerName = PlayerPrefs.GetString("PlayerName");
+            carColor = ColorCar.IntToColor(PlayerPrefs.GetInt("Red"), PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
+        }
+        else
+        {
+            string[] aiNames = { "Anna", "Marek", "Zofia", "Jan", "Kasia", "Tomasz", "Ewa", "Kamil" };
+            playerName = aiNames[playerNumber % aiNames.Length];
+            carColor = new Color(Random.Range(0f, 255f) / 255, Random.Range(0f, 255f) / 255, Random.Range(0f, 255f) / 255);
+        }
+
+        if (nameText != null)
+        {
+            nameText.text = playerName;
+            nameText.color = carColor; // opcjonalnie
+        }
+
+        if (carRenderer != null)
+        {
+            carRenderer.material.color = carColor;
+        }
     }
 
     // Update is called once per frame

@@ -59,13 +59,25 @@ public class RaceController : MonoBehaviour
             car.transform.position = spawnPoints[i].position;
             car.transform.rotation = spawnPoints[i].rotation;
 
-            car.GetComponentInChildren<CarAppearance>().playerNumber = i;
+            CarAppearance appearance = car.GetComponentInChildren<CarAppearance>();
+            if (appearance != null)
+            {
+                appearance.playerNumber = i;
+            }
 
             if (i == 0)
             {
-                car.GetComponent<PlayerController>().enabled = true;
-                //GameObject.FindObjectOfType<CameraController>().SetCameraProperties(car);
-                //GameObject.FindFirstObjectByType<CameraController>().SetCameraProperties(car);
+                PlayerController playerController = car.GetComponent<PlayerController>();
+                if (playerController != null)
+                {
+                    playerController.enabled = true;
+                }
+                
+                CameraController camController = GameObject.FindFirstObjectByType<CameraController>();
+                if (camController != null)
+                {
+                    camController.SetCameraProperties(car);
+                }
             }
         }
 
