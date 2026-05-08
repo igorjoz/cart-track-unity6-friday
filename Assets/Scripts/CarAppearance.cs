@@ -37,9 +37,21 @@ public class CarAppearance : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetNameAndColor(string name, Color color)
     {
-        
+        nameText.text = name;
+        carRenderer.material.color = color;
+        nameText.color = color;
+    }
+
+    public void SetLocalPlayer()
+    {
+        FindObjectOfType<CameraController>().SetCameraProperties(this.gameObject);
+        playerName = PlayerPrefs.GetString("PlayerName");
+        carColor = ColorCar.IntToColor(PlayerPrefs.GetInt("Red"),
+        PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
+        nameText.text = playerName;
+        carRenderer.material.color = carColor;
+        nameText.color = carColor;
     }
 }
