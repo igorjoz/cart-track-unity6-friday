@@ -46,7 +46,8 @@ public class RaceController : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("StartGame", RpcTarget.All, null);
+            // Usuniêty zbêdny "null" dla bezpieczniejszego RPC
+            photonView.RPC("StartGame", RpcTarget.All);
         }
     }
 
@@ -77,7 +78,9 @@ public class RaceController : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+        // 1. Zabezpieczenie przed b³êdem, jeœli Photon nie jest w pokoju (np. przy testach offline)
+        playerCount = PhotonNetwork.InRoom ? PhotonNetwork.CurrentRoom.PlayerCount : 1;
+
         endPanel.SetActive(false);
         audioSource = GetComponent<AudioSource>();
         startText.gameObject.SetActive(false);
@@ -87,7 +90,8 @@ public class RaceController : MonoBehaviourPunCallbacks
         Vector3 startPos = spawnPoints[randomStartPosition].position;
         Quaternion startRot = spawnPoints[randomStartPosition].rotation;
         GameObject playerCar = null;
-        if (PhotonNetwork.IsConnected)
+
+        if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
         {
             startPos = spawnPoints[PhotonNetwork.CurrentRoom.PlayerCount - 1].position;
             startRot = spawnPoints[PhotonNetwork.CurrentRoom.PlayerCount - 1].rotation;
@@ -96,12 +100,23 @@ public class RaceController : MonoBehaviourPunCallbacks
             instanceData[1] = PlayerPrefs.GetInt("Red");
             instanceData[2] = PlayerPrefs.GetInt("Green");
             instanceData[3] = PlayerPrefs.GetInt("Blue");
+
             if (OnlinePlayer.LocalPlayerInstance == null)
             {
                 playerCar = PhotonNetwork.Instantiate(carPrefab.name, startPos, startRot, 0, instanceData);
 
-                playerCar.GetComponent<CarAppearance>().SetLocalPlayer();
+                // 2. Szukamy komponentu równie¿ w dzieciach i zabezpieczamy przez rzuceniem b³êdu
+                CarAppearance appearance = playerCar.GetComponentInChildren<CarAppearance>();
+                if (appearance != null)
+                {
+                    appearance.SetLocalPlayer();
+                }
+                else
+                {
+                    Debug.LogWarning("Nie znaleziono komponentu CarAppearance na prefabrykowanym pojeŸdzie lub w jego dzieciach!");
+                }
             }
+
             if (PhotonNetwork.IsMasterClient)
             {
                 startRace.SetActive(true);
@@ -111,8 +126,13 @@ public class RaceController : MonoBehaviourPunCallbacks
                 waitingText.SetActive(true);
             }
         }
-        playerCar.GetComponent<DrivingScript>().enabled = true;
-        playerCar.GetComponent<PlayerController>().enabled = true;
+
+        // Zabezpieczenie na wypadek braku instancji (np. przy trybie offline):
+        if (playerCar != null)
+        {
+            playerCar.GetComponent<DrivingScript>().enabled = true;
+            playerCar.GetComponent<PlayerController>().enabled = true;
+        }
     }
 
     //audioSource = GetComponent<AudioSource>();
@@ -157,10 +177,13 @@ public class RaceController : MonoBehaviourPunCallbacks
     //{
     //    carControllers[i] = cars[i].GetComponent<CheckPointController>();
     //}
-//}
+    //}
 
     private void LateUpdate()
     {
+        // Zabezpieczenie przed momentem zanim wywo³a siê StartGame:
+        if (carControllers == null || carControllers.Length == 0) return;
+
         int carsThatCompletedRace = 0;
 
         foreach (CheckPointController controller in carControllers)
@@ -169,12 +192,12 @@ public class RaceController : MonoBehaviourPunCallbacks
             {
                 carsThatCompletedRace++;
             }
+        } // Wyci¹gniêty warunek koñca gry poza pêtlê dla poprawnej struktury
 
-            if (carsThatCompletedRace == carControllers.Length && isRacing)
-            {
-                if (endPanel != null) endPanel.SetActive(true);
-                isRacing = false;
-            }
+        if (carsThatCompletedRace == carControllers.Length && isRacing)
+        {
+            if (endPanel != null) endPanel.SetActive(true);
+            isRacing = false;
         }
     }
 
