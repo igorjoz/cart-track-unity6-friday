@@ -46,7 +46,16 @@ public class CarAppearance : MonoBehaviour
 
     public void SetLocalPlayer()
     {
-        FindObjectOfType<CameraController>().SetCameraProperties(this.gameObject);
+        DrivingScript ds = GetComponentInParent<DrivingScript>();
+        if (ds != null)
+        {
+            FindObjectOfType<CameraController>().SetCameraProperties(ds.gameObject);
+        }
+        else
+        {
+            FindObjectOfType<CameraController>().SetCameraProperties(this.gameObject);
+        }
+
         playerName = PlayerPrefs.GetString("PlayerName");
         carColor = ColorCar.IntToColor(PlayerPrefs.GetInt("Red"),
         PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
