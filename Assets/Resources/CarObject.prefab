@@ -1713,6 +1713,7 @@ MonoBehaviour:
   nameText: {fileID: 2789557305396211206}
   carRenderer: {fileID: 8935061863902061803}
   playerNumber: 0
+  checkPoint: {fileID: 0}
 --- !u!114 &4809519230559694174
 MonoBehaviour:
   m_ObjectHideFlags: 0
