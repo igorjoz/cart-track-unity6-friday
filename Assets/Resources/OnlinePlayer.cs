@@ -9,7 +9,21 @@ public class OnlinePlayer : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            LocalPlayerInstance = gameObject; //gameObject -> GameObject do którego jest przypęty skrypt
+            LocalPlayerInstance = gameObject;
+        }
+        else if (photonView.InstantiationData != null && photonView.InstantiationData.Length >= 4)
+        {
+            string playerName = photonView.InstantiationData[0] as string;
+            Color playerColor = ColorCar.IntToColor(
+                (int)photonView.InstantiationData[1],
+                (int)photonView.InstantiationData[2],
+                (int)photonView.InstantiationData[3]);
+
+            CarAppearance appearance = GetComponentInChildren<CarAppearance>();
+            if (appearance != null && !string.IsNullOrWhiteSpace(playerName))
+            {
+                appearance.SetNameAndColor(playerName, playerColor);
+            }
         }
     }
 }

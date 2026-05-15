@@ -9,20 +9,31 @@ public class CarAppearance : MonoBehaviour
     public Renderer carRenderer;
 
     public int playerNumber;
+    public CheckPointController checkPoint;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (playerNumber == 0)
+        if (checkPoint == null)
+        {
+            checkPoint = GetComponent<CheckPointController>();
+        }
+
+        if (string.IsNullOrWhiteSpace(playerName) && playerNumber == 0)
         {
             playerName = PlayerPrefs.GetString("PlayerName");
             carColor = ColorCar.IntToColor(PlayerPrefs.GetInt("Red"), PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
         }
-        else
+        else if (string.IsNullOrWhiteSpace(playerName))
         {
             string[] aiNames = { "Anna", "Marek", "Zofia", "Jan", "Kasia", "Tomasz", "Ewa", "Kamil" };
             playerName = aiNames[playerNumber % aiNames.Length];
             carColor = new Color(Random.Range(0f, 255f) / 255, Random.Range(0f, 255f) / 255, Random.Range(0f, 255f) / 255);
+        }
+
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            playerName = "Player";
         }
 
         if (nameText != null)
@@ -39,28 +50,39 @@ public class CarAppearance : MonoBehaviour
 
     public void SetNameAndColor(string name, Color color)
     {
-        nameText.text = name;
-        carRenderer.material.color = color;
-        nameText.color = color;
+        playerName = name;
+        carColor = color;
+
+        if (nameText != null)
+        {
+            nameText.text = name;
+            nameText.color = color;
+        }
+
+        if (carRenderer != null)
+        {
+            carRenderer.material.color = color;
+        }
     }
 
     public void SetLocalPlayer()
     {
         DrivingScript ds = GetComponentInParent<DrivingScript>();
-        if (ds != null)
+        CameraController cameraController = FindAnyObjectByType<CameraController>();
+
+        if (ds != null && cameraController != null)
         {
-            FindObjectOfType<CameraController>().SetCameraProperties(ds.gameObject);
+            cameraController.SetCameraProperties(ds.gameObject);
         }
-        else
+        else if (cameraController != null)
         {
-            FindObjectOfType<CameraController>().SetCameraProperties(this.gameObject);
+            cameraController.SetCameraProperties(this.gameObject);
         }
 
         playerName = PlayerPrefs.GetString("PlayerName");
         carColor = ColorCar.IntToColor(PlayerPrefs.GetInt("Red"),
         PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
-        nameText.text = playerName;
-        carRenderer.material.color = carColor;
-        nameText.color = carColor;
+        SetNameAndColor(playerName, carColor);
     }
+
 }
