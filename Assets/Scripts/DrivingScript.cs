@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class DrivingScript : MonoBehaviour
 {
@@ -25,6 +26,44 @@ public class DrivingScript : MonoBehaviour
     int currentGear = 1;
     float currentGearPerc;
     public int numGears = 5;
+
+    public float nitroFuel = 3;
+    public GameObject nitroLights;
+    public TextMeshProUGUI nitroText;
+
+    void Boost(float boostPower)
+    {
+        rb.AddForce(rb.gameObject.transform.forward * boostPower);
+    }
+
+    public void CheckNitro(bool isNitroActive)
+    {
+        if (nitroFuel > 0 && isNitroActive)
+        {
+            Boost(1_000_000);
+            nitroFuel -= 1f;
+            nitroFuel = Mathf.Clamp(nitroFuel, 0, 5);
+            nitroLights.SetActive(true);
+
+            UpdateNitroText();
+        }
+        else
+        {
+            nitroLights.SetActive(false);
+        }
+    }
+
+    public void UpdateNitroText()
+    {
+        nitroText.text = "Nitro: " + nitroFuel.ToString();
+    }
+
+    public void AddNitro()
+    {
+        nitroFuel += 1;
+        nitroFuel = Mathf.Clamp(nitroFuel, 0, 5);
+        UpdateNitroText();
+    }
 
     void Start()
     {
