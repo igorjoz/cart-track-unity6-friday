@@ -43,19 +43,28 @@ public class DrivingScript : MonoBehaviour
             Boost(1_000_000);
             nitroFuel -= 1f;
             nitroFuel = Mathf.Clamp(nitroFuel, 0, 5);
-            nitroLights.SetActive(true);
+            if (nitroLights != null)
+            {
+                nitroLights.SetActive(true);
+            }
 
             UpdateNitroText();
         }
         else
         {
-            nitroLights.SetActive(false);
+            if (nitroLights != null)
+            {
+                nitroLights.SetActive(false);
+            }
         }
     }
 
     public void UpdateNitroText()
     {
-        nitroText.text = "Nitro: " + nitroFuel.ToString();
+        if (nitroText != null)
+        {
+            nitroText.text = "Nitro: " + nitroFuel.ToString();
+        }
     }
 
     public void AddNitro()
@@ -67,18 +76,27 @@ public class DrivingScript : MonoBehaviour
 
     void Start()
     {
-        GameObject nitroTextObject = GameObject.FindGameObjectWithTag("Fuel");
-
-        if (nitroTextObject != null)
+        if (nitroText == null)
         {
-            nitroText = nitroTextObject.GetComponent<TextMeshProUGUI>();
-            UpdateNitroText();
+            GameObject nitroTextObject = GameObject.FindGameObjectWithTag("Fuel");
+
+            if (nitroTextObject == null)
+            {
+                nitroTextObject = GameObject.Find("NitroText");
+            }
+
+            if (nitroTextObject != null)
+            {
+                nitroText = nitroTextObject.GetComponent<TextMeshProUGUI>();
+            }
         }
 
         if (nitroLights != null)
         {
             nitroLights.SetActive(false);
         }
+
+        UpdateNitroText();
     }
 
     public void Drive(float acceleration, float brake, float steering)

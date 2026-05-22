@@ -46,7 +46,7 @@ public class RaceController : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            // Usuniêty zbêdny "null" dla bezpieczniejszego RPC
+            // UsuniÄ™ty zbÄ™dny "null" dla bezpieczniejszego RPC
             photonView.RPC("StartGame", RpcTarget.All);
         }
     }
@@ -78,7 +78,6 @@ public class RaceController : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        // 1. Zabezpieczenie przed b³êdem, jeœli Photon nie jest w pokoju (np. przy testach offline)
         playerCount = PhotonNetwork.InRoom ? PhotonNetwork.CurrentRoom.PlayerCount : 1;
 
         endPanel.SetActive(false);
@@ -86,6 +85,13 @@ public class RaceController : MonoBehaviourPunCallbacks
         startText.gameObject.SetActive(false);
         startRace.SetActive(false);
         waitingText.SetActive(false);
+
+        if (carPrefab == null || spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogError("RaceController nie ma ustawionego carPrefab albo spawnPoints.");
+            return;
+        }
+
         int randomStartPosition = Random.Range(0, spawnPoints.Length);
         Vector3 startPos = spawnPoints[randomStartPosition].position;
         Quaternion startRot = spawnPoints[randomStartPosition].rotation;
@@ -93,28 +99,21 @@ public class RaceController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
         {
-            startPos = spawnPoints[PhotonNetwork.CurrentRoom.PlayerCount - 1].position;
-            startRot = spawnPoints[PhotonNetwork.CurrentRoom.PlayerCount - 1].rotation;
+            int spawnIndex = (PhotonNetwork.LocalPlayer.ActorNumber - 1) % spawnPoints.Length;
+            startPos = spawnPoints[spawnIndex].position;
+            startRot = spawnPoints[spawnIndex].rotation;
+
             object[] instanceData = new object[4];
-            instanceData[0] = (string)PlayerPrefs.GetString("PlayerName");
+            instanceData[0] = PlayerPrefs.GetString("PlayerName");
             instanceData[1] = PlayerPrefs.GetInt("Red");
             instanceData[2] = PlayerPrefs.GetInt("Green");
             instanceData[3] = PlayerPrefs.GetInt("Blue");
 
-            if (OnlinePlayer.LocalPlayerInstance == null)
+            playerCar = OnlinePlayer.LocalPlayerInstance;
+
+            if (playerCar == null)
             {
                 playerCar = PhotonNetwork.Instantiate(carPrefab.name, startPos, startRot, 0, instanceData);
-
-                // 2. Szukamy komponentu równie¿ w dzieciach i zabezpieczamy przez rzuceniem b³êdu
-                CarAppearance appearance = playerCar.GetComponentInChildren<CarAppearance>();
-                if (appearance != null)
-                {
-                    appearance.SetLocalPlayer();
-                }
-                else
-                {
-                    Debug.LogWarning("Nie znaleziono komponentu CarAppearance na prefabrykowanym pojeŸdzie lub w jego dzieciach!");
-                }
             }
 
             if (PhotonNetwork.IsMasterClient)
@@ -126,12 +125,47 @@ public class RaceController : MonoBehaviourPunCallbacks
                 waitingText.SetActive(true);
             }
         }
-
-        // Zabezpieczenie na wypadek braku instancji (np. przy trybie offline):
-        if (playerCar != null)
+        else
         {
-            playerCar.GetComponent<DrivingScript>().enabled = true;
-            playerCar.GetComponent<PlayerController>().enabled = true;
+            playerCar = Instantiate(carPrefab, startPos, startRot);
+        }
+
+        ConfigureLocalCar(playerCar);
+    }
+
+    void ConfigureLocalCar(GameObject playerCar)
+    {
+        if (playerCar == null)
+        {
+            Debug.LogWarning("Nie znaleziono lokalnego samochodu gracza.");
+            return;
+        }
+
+        DrivingScript drivingScript = playerCar.GetComponent<DrivingScript>();
+        if (drivingScript != null)
+        {
+            drivingScript.enabled = true;
+
+            if (drivingScript.engineSound != null)
+            {
+                drivingScript.engineSound.mute = false;
+            }
+        }
+
+        PlayerController playerController = playerCar.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.enabled = true;
+        }
+
+        CarAppearance appearance = playerCar.GetComponentInChildren<CarAppearance>();
+        if (appearance != null)
+        {
+            appearance.SetLocalPlayer();
+        }
+        else
+        {
+            Debug.LogWarning("Nie znaleziono komponentu CarAppearance na samochodzie gracza.");
         }
     }
 
@@ -181,7 +215,7 @@ public class RaceController : MonoBehaviourPunCallbacks
 
     private void LateUpdate()
     {
-        // Zabezpieczenie przed momentem zanim wywo³a siê StartGame:
+        // Zabezpieczenie przed momentem zanim wywoÅ‚a siÄ™ StartGame:
         if (carControllers == null || carControllers.Length == 0) return;
 
         int carsThatCompletedRace = 0;
@@ -192,7 +226,7 @@ public class RaceController : MonoBehaviourPunCallbacks
             {
                 carsThatCompletedRace++;
             }
-        } // Wyci¹gniêty warunek koñca gry poza pêtlê dla poprawnej struktury
+        } // WyciÄ…gniÄ™ty warunek koÅ„ca gry poza pÄ™tlÄ™ dla poprawnej struktury
 
         if (carsThatCompletedRace == carControllers.Length && isRacing)
         {
