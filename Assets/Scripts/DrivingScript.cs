@@ -67,6 +67,18 @@ public class DrivingScript : MonoBehaviour
 
     void Start()
     {
+        GameObject nitroTextObject = GameObject.FindGameObjectWithTag("Fuel");
+
+        if (nitroTextObject != null)
+        {
+            nitroText = nitroTextObject.GetComponent<TextMeshProUGUI>();
+            UpdateNitroText();
+        }
+
+        if (nitroLights != null)
+        {
+            nitroLights.SetActive(false);
+        }
     }
 
     public void Drive(float acceleration, float brake, float steering)
