@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 163484701}
   - component: {fileID: 163484700}
   m_Layer: 5
-  m_Name: Place1
+  m_Name: 1Place
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2116,7 +2116,7 @@ GameObject:
   - component: {fileID: 811468766}
   - component: {fileID: 811468765}
   m_Layer: 5
-  m_Name: Place2
+  m_Name: 2Place
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2890,7 +2890,7 @@ GameObject:
   - component: {fileID: 1110947682}
   - component: {fileID: 1110947681}
   m_Layer: 5
-  m_Name: Place3
+  m_Name: 3Place
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3786,7 +3786,7 @@ GameObject:
   - component: {fileID: 1339954397}
   - component: {fileID: 1339954396}
   m_Layer: 5
-  m_Name: Place4
+  m_Name: 4Place
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4347,7 +4347,7 @@ GameObject:
   - component: {fileID: 1417981008}
   - component: {fileID: 1417981007}
   m_Layer: 5
-  m_Name: LeadeboardPanel
+  m_Name: LeaderboardPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
