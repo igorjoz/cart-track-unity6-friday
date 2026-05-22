@@ -1518,6 +1518,7 @@ GameObject:
   - component: {fileID: 8139512449632002581}
   - component: {fileID: 482690392470558524}
   - component: {fileID: 6823431400138382939}
+  - component: {fileID: 2529982227195457764}
   m_Layer: 0
   m_Name: CarObject
   m_TagString: Untagged
@@ -1595,7 +1596,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: a6e716893630f7b4093e902b2f70a9c5, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
@@ -1719,6 +1720,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &2529982227195457764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6342323451222976592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4a55f2ebd25518d958ee270a640775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnlinePlayer
 --- !u!1 &7306271555564905041
 GameObject:
   m_ObjectHideFlags: 0

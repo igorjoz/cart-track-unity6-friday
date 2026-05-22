@@ -3955,7 +3955,7 @@ MonoBehaviour:
   - {fileID: 1762130736}
   - {fileID: 827292690}
   - {fileID: 1263824522}
-  carPrefab: {fileID: 7881040271567974881, guid: 0babf39ff4bfd42468bb789ed804a524, type: 3}
+  carPrefab: {fileID: 6342323451222976592, guid: 286dfa2042d3c7962b9e4fe6d7c7ac83, type: 3}
   startRace: {fileID: 1326846679}
   waitingText: {fileID: 628377144}
 --- !u!4 &1342601916
