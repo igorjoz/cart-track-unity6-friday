@@ -90,18 +90,26 @@ namespace Photon.Pun
 
                     if (this.m_SynchronizeVelocity)
                     {
-                        this.m_Body.linearVelocity = (Vector3)stream.ReceiveNext();
+                        Vector3 recvVelocity = (Vector3)stream.ReceiveNext();
+                        if (!this.m_Body.isKinematic)
+                        {
+                            this.m_Body.linearVelocity = recvVelocity;
+                        }
 
-                        this.m_NetworkPosition += this.m_Body.linearVelocity * lag;
+                        this.m_NetworkPosition += recvVelocity * lag;
 
                         this.m_Distance = Vector3.Distance(this.m_Body.position, this.m_NetworkPosition);
                     }
 
                     if (this.m_SynchronizeAngularVelocity)
                     {
-                        this.m_Body.angularVelocity = (Vector3)stream.ReceiveNext();
+                        Vector3 recvAngularVelocity = (Vector3)stream.ReceiveNext();
+                        if (!this.m_Body.isKinematic)
+                        {
+                            this.m_Body.angularVelocity = recvAngularVelocity;
+                        }
 
-                        this.m_NetworkRotation = Quaternion.Euler(this.m_Body.angularVelocity * lag) * this.m_NetworkRotation;
+                        this.m_NetworkRotation = Quaternion.Euler(recvAngularVelocity * lag) * this.m_NetworkRotation;
 
                         this.m_Angle = Quaternion.Angle(this.m_Body.rotation, this.m_NetworkRotation);
                     }
