@@ -1453,6 +1453,9 @@ MonoBehaviour:
   backLights: {fileID: 569327168612671033}
   engineSound: {fileID: 8139512449632002581}
   numGears: 5
+  nitroFuel: 3
+  nitroLights: {fileID: 0}
+  nitroText: {fileID: 0}
 --- !u!82 &8139512449632002581
 AudioSource:
   m_ObjectHideFlags: 0
