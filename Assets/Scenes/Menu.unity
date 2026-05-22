@@ -902,7 +902,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 6, y: 1, z: 6}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4619457302750902175}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &376416392
@@ -2885,7 +2886,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1173501885}
+        m_TargetAssemblyTypeName: RaceLauncher, Assembly-CSharp
+        m_MethodName: SetName
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4973,7 +4986,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9222223613127470287}
-  - component: {fileID: 5021285347062411448}
   m_Layer: 0
   m_Name: CarBody
   m_TagString: Car
@@ -5155,13 +5167,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7881040272614516175}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.12295126, y: 2.97, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.020491878, y: 1.83, z: 0}
+  m_LocalScale: {x: 0.16666667, y: 1, z: 0.16666667}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9222223613127470287}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 362835558}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4778792157164270450
 MeshFilter:
@@ -5219,23 +5231,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &5021285347062411448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2996768244573155770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c058ab8c0a28a349bce04d259a9f627, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  playerName: tomi
-  carColor: {r: 0, g: 0.37000227, b: 1, a: 1}
-  nameText: {fileID: 2584683500780410624}
-  carRenderer: {fileID: 2551030834044873568}
-  playerNumber: 0
 --- !u!108 &5102573704162679944
 Light:
   m_ObjectHideFlags: 0
@@ -5679,6 +5674,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4619457302750902175}
   - component: {fileID: 8327631719539375155}
+  - component: {fileID: 8327631719539375156}
   m_Layer: 0
   m_Name: CarObject
   m_TagString: Untagged
@@ -5861,6 +5857,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8327631719539375156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7881040272614516175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7364b95c1abec274e992c8c5fc8f46c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Rotate
+  speed: 10
 --- !u!114 &8463192075839945220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6035,7 +6044,6 @@ SceneRoots:
   - {fileID: 1048044691}
   - {fileID: 1154207328}
   - {fileID: 312007019}
-  - {fileID: 4619457302750902175}
   - {fileID: 362835558}
   - {fileID: 1087335210}
   - {fileID: 1869280556}

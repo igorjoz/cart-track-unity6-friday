@@ -1,4 +1,7 @@
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,10 +22,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        float acceleration = Input.GetAxis("Vertical");
-        float steering = Input.GetAxis("Horizontal");
-        float brake = Input.GetAxis("Jump");
-        bool nitro = Input.GetKeyDown(KeyCode.LeftShift);
+        float acceleration = ReadAcceleration();
+        float steering = ReadSteering();
+        float brake = ReadBrake();
+        bool nitro = WasNitroPressed();
 
         driveScript.CheckNitro(nitro);
 
@@ -48,6 +51,86 @@ public class PlayerController : MonoBehaviour
 
         driveScript.Drive(acceleration, brake, steering);
         driveScript.EngineSound();
+    }
+
+    float ReadAcceleration()
+    {
+        float value = 0;
+
+#if ENABLE_LEGACY_INPUT_MANAGER
+        value += Input.GetAxis("Vertical");
+#endif
+
+#if ENABLE_INPUT_SYSTEM
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard != null)
+        {
+            if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) value += 1;
+            if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) value -= 1;
+        }
+#endif
+
+        return Mathf.Clamp(value, -1, 1);
+    }
+
+    float ReadSteering()
+    {
+        float value = 0;
+
+#if ENABLE_LEGACY_INPUT_MANAGER
+        value += Input.GetAxis("Horizontal");
+#endif
+
+#if ENABLE_INPUT_SYSTEM
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard != null)
+        {
+            if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) value += 1;
+            if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) value -= 1;
+        }
+#endif
+
+        return Mathf.Clamp(value, -1, 1);
+    }
+
+    float ReadBrake()
+    {
+#if ENABLE_LEGACY_INPUT_MANAGER
+        if (Input.GetAxis("Jump") > 0.1f || Input.GetKey(KeyCode.Space))
+        {
+            return 1;
+        }
+#endif
+
+#if ENABLE_INPUT_SYSTEM
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard != null && keyboard.spaceKey.isPressed)
+        {
+            return 1;
+        }
+#endif
+
+        return 0;
+    }
+
+    bool WasNitroPressed()
+    {
+#if ENABLE_LEGACY_INPUT_MANAGER
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            return true;
+        }
+#endif
+
+#if ENABLE_INPUT_SYSTEM
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard != null)
+        {
+            return keyboard.leftShiftKey.wasPressedThisFrame || keyboard.rightShiftKey.wasPressedThisFrame;
+        }
+#endif
+
+        return false;
     }
 
     void ResetLayer()

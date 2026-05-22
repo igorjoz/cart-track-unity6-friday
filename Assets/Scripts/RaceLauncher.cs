@@ -32,7 +32,11 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         networkText.text = "Joined room with " + PhotonNetwork.CurrentRoom.PlayerCount + " players\n";
-        PhotonNetwork.LoadLevel("Game");
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Game");
+        }
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -62,6 +66,7 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
 
     void Awake()
     {
+        Application.runInBackground = true;
         PhotonNetwork.AutomaticallySyncScene = true;
         
         if (PlayerPrefs.HasKey("PlayerName") && playerNameInput != null)
