@@ -361,6 +361,7 @@ MonoBehaviour:
   nameText: {fileID: 2584683501877150510}
   carRenderer: {fileID: 2551030835091816270}
   playerNumber: 0
+  checkPoint: {fileID: 0}
 --- !u!1 &4064473887748431515
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,6 +1164,7 @@ GameObject:
   - component: {fileID: 8539456493040868647}
   - component: {fileID: 2792897618094032212}
   - component: {fileID: 8327631718434236445}
+  - component: {fileID: 2529982227195457764}
   m_Layer: 0
   m_Name: CarObject
   m_TagString: Untagged
@@ -1225,6 +1227,9 @@ MonoBehaviour:
   backLights: {fileID: 4932763334541985270}
   engineSound: {fileID: 8327631718434236445}
   numGears: 5
+  nitroFuel: 3
+  nitroLights: {fileID: 0}
+  nitroText: {fileID: 0}
 --- !u!82 &8327631718434236445
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1322,6 +1327,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2529982227195457764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7881040271567974881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4a55f2ebd25518d958ee270a640775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnlinePlayer
 --- !u!1 &7890043669776815389
 GameObject:
   m_ObjectHideFlags: 0
